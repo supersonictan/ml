@@ -1,15 +1,11 @@
 /*
 package com.priv.tanzhen.ml.model;
 
-import com.ilighti.ml.Feature;
 
 import java.io.Serializable;
 import java.util.HashMap;
 
-*/
-/**
- * Created by rain on 16-6-14.
- *//*
+
 
 public class FtrlSolver implements Serializable {
     private double alpha = .1;

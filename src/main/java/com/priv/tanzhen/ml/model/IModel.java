@@ -10,5 +10,6 @@ public interface IModel extends Serializable {
 
     public void train(double[] example);
     public double score(double[] inst);
+    public void addInstance(double[] example);
     public String debug();
 }
