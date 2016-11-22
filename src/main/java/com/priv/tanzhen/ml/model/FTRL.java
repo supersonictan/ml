@@ -1,10 +1,8 @@
-package com.priv.tanzhen.ml.model.ftrl;
+package com.priv.tanzhen.ml.model;
 
-import com.priv.tanzhen.ml.model.IModel;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -13,10 +11,10 @@ import java.util.List;
 public class FTRL implements IModel {
     private static final Logger logger = LogManager.getLogger(FTRL.class);
     private static final long serialVersionUID = -7762112720648622188L;
-    private double alpha = 0.1D;
-    private double beta = 1.0D;
+    private double alpha = 0.1D; //learning rate param
+    private double beta = 1.0D; //learning rate param
     private double lambdaOne = 0.7D;
-    private double lambdaTwo = 0.5D;
+    private double lambdaTwo = 1.0D;
     private double[] z; //z
     private double[] weights; //weights
     private double[] n; //n

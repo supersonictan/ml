@@ -1,7 +1,7 @@
-package com.priv.tanzhen.ml.test;
+package com.priv.tanzhen.test;
 
 import com.priv.tanzhen.ml.model.IModel;
-import com.priv.tanzhen.ml.model.ftrl.FTRL;
+import com.priv.tanzhen.ml.model.FTRL;
 
 import java.io.*;
 
@@ -62,9 +62,8 @@ public class TestModel {
             }
             double res = ftrl.score(example);
             mse += Math.pow((label-res),2);
-            System.out.println(mse);
         }
-        System.out.println("MSE=" + mse/n + ",n="+n + " ,mse=" + mse);
+        System.out.println("MSE=" + mse/n);
     }
 
 
