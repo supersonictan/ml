@@ -9,52 +9,29 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by TanZhen on 2016/11/22.
  */
-public class ConsumerTest extends Thread {
+public class ConsumerTest implements Runnable {
 
-    private final ConsumerConnector consumer;
-    private final String topic;
+    private KafkaStream m_stream;
+    private int m_threadNumber;
 
-    public static void main(String[] args) {
-        ConsumerTest consumerThread = new ConsumerTest("idoall_testTopic");
-        consumerThread.start();
-    }
-    public ConsumerTest(String topic) {
-        consumer =kafka.consumer.Consumer.createJavaConsumerConnector(createConsumerConfig());
-        this.topic =topic;
+    public ConsumerTest(KafkaStream a_stream, int a_threadNumber) {
+        m_threadNumber = a_threadNumber;
+        m_stream = a_stream;
     }
 
-    private static ConsumerConfig createConsumerConfig() {
-        Properties props = new Properties();
-        // 设置zookeeper的链接地址
-        props.put("zookeeper.connect","hadoop1,hadoop2,hadoop3,hadoop4,hadoop5,hadoop6:2181");
-        // 设置group id
-        props.put("group.id", "1");
-        // kafka的group 消费记录是保存在zookeeper上的, 但这个信息在zookeeper上不是实时更新的, 需要有个间隔时间更新
-        props.put("auto.commit.interval.ms", "1000");
-        props.put("zookeeper.session.timeout.ms","10000");
-        return new ConsumerConfig(props);
-    }
-
-    public void run(){
-        //设置Topic=>Thread Num映射关系, 构建具体的流
-        Map<String,Integer> topickMap = new HashMap<String, Integer>();
-        topickMap.put(topic, 1);
-        Map<String, List<KafkaStream<byte[],byte[]>>>  streamMap=consumer.createMessageStreams(topickMap);
-
-        KafkaStream<byte[],byte[]>stream = streamMap.get(topic).get(0);
-        ConsumerIterator<byte[],byte[]> it =stream.iterator();
-        System.out.println("*********Results********");
-        while(it.hasNext()){
-            System.err.println("get data:" +new String(it.next().message()));
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+    public void run() {
+        ConsumerIterator<byte[], byte[]> it = m_stream.iterator();
+        while (it.hasNext()){
+            System.out.println("Thread " + m_threadNumber + ": " + new String(it.next().message()));
         }
+        System.out.println("Shutting down Thread: " + m_threadNumber);
     }
+
 }
